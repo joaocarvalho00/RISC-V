@@ -1,4 +1,4 @@
-`include "defines.v"
+`include "src/defines.v"
 
 module instruction_fetch(
     // Inputs
