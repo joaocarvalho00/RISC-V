@@ -18,7 +18,7 @@ begin
     else begin
         if (alu_sel) // Operations with immediate, alu_sel = 1
         begin
-            case (funct3) // Falta sltiu e srli_srai
+            case (funct3) // Faltam ops
                 `FUNCT3_ADDI:
                     out <= x + y;
                 `FUNCT3_SLTI:
@@ -33,7 +33,7 @@ begin
         end
         else // Operations without immediate, alu_sel = 0
         begin
-            case (funct3) // Não faz bem o SLT e o SLL??? XOR OR AND não testados
+            case (funct3) // SLL não funciona, faltam ops
                 `FUNCT3_ADD_SUB:
                     case(funct7)
                         `FUNCT7_ADD: 
@@ -42,7 +42,7 @@ begin
                             out <= x - y;
                     endcase
                 `FUNCT3_SLL: // Não funciona
-                    out <= x << y;
+                    out <= x >> y[4:0];
                 `FUNCT3_SLT:
                     out <= ($signed(x) < $signed(y)) ? 32'd1 : 32'd0;
                 `FUNCT3_SLTU:
