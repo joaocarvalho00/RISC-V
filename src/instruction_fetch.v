@@ -12,7 +12,9 @@ module instruction_fetch(
     output reg [4:0] out_addr1,
     output reg [4:0] out_addr2,
     output reg [4:0] out_addr_dest,
-    output reg [31:0] out_imm 
+    output reg [31:0] out_imm ,
+    output reg alu_sel
+    // output variável a dizer que estamos ou não a trabalhar com immediate
 );
 
     // Decode and fetch instruction
@@ -95,7 +97,7 @@ module instruction_fetch(
                 out_funct3       <= 3'b0;
                 out_funct7       <= 7'b0;
             end
-            `OP_OP:
+            `OP_OP_IMM:
             begin
                 out_addr_dest    <= rd;
                 out_imm          <= imm_i;
@@ -103,8 +105,9 @@ module instruction_fetch(
                 out_addr1        <= rs1;
                 out_funct7       <= 7'b0;
                 out_addr2        <= 5'b0;
+                alu_sel          <= 1'b1; // immediate operations in alu -> alu_sel = 1
             end                
-            `OP_OP_IMM:
+            `OP_OP:
             begin
                 out_addr_dest    <= rd;
                 out_funct3       <= funct3;
@@ -112,6 +115,7 @@ module instruction_fetch(
                 out_addr1        <= rs1;
                 out_addr2        <= rs2;
                 out_imm          <= 32'b0;
+                alu_sel          <= 1'b0; // non-immediate operations in alu -> alu_sel = 0
             end            
             `OP_BRANCH:
             begin
