@@ -6,7 +6,7 @@ module alu(
     input wire [2:0] funct3,
     input wire [6:0] funct7,
     input wire [31:0] x,
-    input wire [31:0] y, // immediate is stored in y
+    input wire [31:0] y, // Immediate is stored in y
     input wire alu_sel,
     output reg [31:0] out
 );
@@ -29,6 +29,9 @@ begin
                     out <= x | y;
                 `FUNCT3_ANDI:
                     out <= x & y;
+
+                `FUNCT3_SLLI:
+                    out <= x << y;
             endcase
         end
         else // Operations without immediate, alu_sel = 0
