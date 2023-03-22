@@ -42,7 +42,7 @@ begin
                             out <= x - y;
                     endcase
                 `FUNCT3_SLL: // Não funciona
-                    out <= x << y[4:0];
+                    out <= x << y;
                 `FUNCT3_SLT:
                     out <= ($signed(x) < $signed(y)) ? 32'd1 : 32'd0;
                 `FUNCT3_SLTU:
