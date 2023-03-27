@@ -18,7 +18,7 @@ begin
     else begin
         if (alu_sel) // Operations with immediate, alu_sel = 1
         begin
-            case (funct3) // Faltam ops
+            case (funct3) // Updated, talvez faltem algumas ops, ver melhor durante os testes
                 `FUNCT3_ADDI:
                     out <= x + y;
                 `FUNCT3_SLTI:
