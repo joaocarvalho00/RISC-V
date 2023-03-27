@@ -29,9 +29,20 @@ begin
                     out <= x | y;
                 `FUNCT3_ANDI:
                     out <= x & y;
-
                 `FUNCT3_SLLI:
                     out <= x << y;
+                `FUNCT3_SLTIU:
+                    out <= (x < y) ? 1'b1 : 1'b0;
+                `FUNCT3_SRLI_SRAI:
+                    case(funct7)
+                    begin
+                        `FUNCT7_SRLI:
+                            out <= x >> y;
+                        `FUNCT7_SRAI:
+                            out <= x >>> y;
+                    end
+                default:
+                    out <= 32'b0;
             endcase
         end
         else // Operations without immediate, alu_sel = 0
