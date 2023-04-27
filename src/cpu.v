@@ -100,8 +100,8 @@ module cpu(
                     write_data_reg <= imm + pc;
                     addr_dest_reg  <= addr_dest;
                 end
-                /*`OP_JAL:
-                `OP_JALR:*/
+                `OP_JAL:
+                /*`OP_JALR:
                 //`OP_LOAD: // Não testei, não vai funcionar
                 //begin
                     /*addr1_reg      <= addr1;

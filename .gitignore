@@ -1,4 +1,2 @@
-
-src/tb_alu.v
 src/tb_alu.vcd
 src/tb_alu.vvp

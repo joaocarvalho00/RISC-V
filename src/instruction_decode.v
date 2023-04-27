@@ -1,12 +1,13 @@
 `include "src/defines.v"
 
-module instruction_fetch(
+module instruction_decode(
     // Inputs
     input wire clk,
     input wire rst,
     input wire [31:0] in_data,
 
     // Outputs
+    output reg [6:0] out_opcode,
     output reg [2:0] out_funct3,
     output reg [6:0] out_funct7,
     output reg [4:0] out_addr1,
@@ -16,6 +17,7 @@ module instruction_fetch(
     output reg alu_sel
     // output variável a dizer que estamos ou não a trabalhar com immediate
 );
+
 
     // Decode and fetch instruction
     wire [6:0] opcode  = in_data[6:0];
@@ -35,16 +37,20 @@ module instruction_fetch(
     always @ (posedge clk or posedge rst)
     begin
         if (rst) begin
+                out_opcode       <= 7'b0;
                 out_addr_dest    <= 5'b0;
                 out_imm          <= 32'b0;
                 out_funct3       <= 3'b0;
                 out_funct7       <= 7'b0;
                 out_addr1        <= 5'b0;
                 out_addr2        <= 5'b0;
+                alu_sel          <= 1'b0;
         end
+        alu_sel <= 1'b0;
         case (opcode) 
             `OP_LUI:
             begin
+                out_opcode       <= `OP_LUI;
                 out_addr_dest    <= rd;
                 out_imm          <= imm_u;
                 out_funct3       <= 3'b0;
@@ -54,6 +60,7 @@ module instruction_fetch(
             end
             `OP_AUIPC:
             begin
+                out_opcode       <= `OP_AUIPC;
                 out_addr_dest    <= rd;
                 out_imm          <= imm_u;
                 out_funct3       <= 3'b0;
@@ -61,8 +68,9 @@ module instruction_fetch(
                 out_addr1        <= 5'b0;
                 out_addr2        <= 5'b0;
             end
-            `OP_JAL: // qqlr cena com program counter?
+            `OP_JAL:
             begin
+                out_opcode       <= `OP_JAL;
                 out_addr_dest    <= rd;
                 out_imm          <= imm_j;
                 out_funct3       <= 3'b0;
@@ -70,8 +78,9 @@ module instruction_fetch(
                 out_addr1        <= 5'b0;
                 out_addr2        <= 5'b0;
             end
-            `OP_JALR: // qqlr cena com program counter?
+            `OP_JALR:
             begin
+                out_opcode       <= `OP_JALR;
                 out_addr_dest    <= rd; 
                 out_imm          <= imm_i;
                 out_funct3       <= funct3;
@@ -81,6 +90,7 @@ module instruction_fetch(
             end
             `OP_LOAD:
             begin
+                out_opcode       <= `OP_LOAD;
                 out_addr_dest    <= rd;
                 out_imm          <= imm_i;
                 out_funct3       <= funct3;
@@ -90,6 +100,7 @@ module instruction_fetch(
             end
             `OP_STORE:
             begin
+                out_opcode       <= `OP_STORE;
                 out_addr1        <= rs1;
                 out_addr2        <= rs2;
                 out_imm          <= imm_s;
@@ -99,6 +110,7 @@ module instruction_fetch(
             end
             `OP_OP_IMM:
             begin
+                out_opcode       <= `OP_OP_IMM;
                 out_addr_dest    <= rd;
                 out_imm          <= imm_i;
                 out_funct3       <= funct3;
@@ -109,6 +121,7 @@ module instruction_fetch(
             end                
             `OP_OP:
             begin
+                out_opcode       <= `OP_OP;
                 out_addr_dest    <= rd;
                 out_funct3       <= funct3;
                 out_funct7       <= funct7;
@@ -119,6 +132,7 @@ module instruction_fetch(
             end            
             `OP_BRANCH:
             begin
+                out_opcode       <= `OP_BRANCH;
                 out_imm          <= imm_b;
                 out_funct3       <= funct3;
                 out_addr1        <= rs1;
@@ -129,6 +143,4 @@ module instruction_fetch(
             //OP_SYSCALL:
         endcase
     end
-
-
 endmodule
