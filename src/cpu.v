@@ -100,18 +100,18 @@ module cpu(
                     write_data_reg <= imm + pc;
                     addr_dest_reg  <= addr_dest;
                 end
-                `OP_JAL:
+                //`OP_JAL:
                 /*`OP_JALR:
-                //`OP_LOAD: // Não testei, não vai funcionar
-                //begin
-                    /*addr1_reg      <= addr1;
+                `OP_LOAD: // Não testei, não vai funcionar
+                begin
+                    addr1_reg      <= addr1;
                     read1_from_reg <= read1_from_reg;
                     write_en       <= 1'b1;
                     write_data_reg <= imm;
-                    addr_dest_reg  <= addr_dest;          */         
-                //end
-                //`OP_STORE:
-                /*`OP_OP:
+                    addr_dest_reg  <= addr_dest;        
+                end
+                `OP_STORE:
+                `OP_OP:
                 `OP_OP_IMM:
                 `OP_BRANCH:*/
             endcase
